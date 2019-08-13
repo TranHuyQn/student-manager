@@ -3,7 +3,7 @@ include_once '../DBconnect.php';
 include_once '../Student.php';
 include_once '../DBstudent.php';
 
-$data = $students->getAll();
+$data = $studentDB->getAll();
 ?>
 <!doctype html>
 <html lang="en">
@@ -19,14 +19,16 @@ $data = $students->getAll();
     <tr>
         <th>ID</th>
         <th>Name</th>
+        <th>Email</th>
         <th></th>
     </tr>
     <?php foreach ($data as $item): ?>
         <tr>
             <td><?php echo $item['id'] ?></td>
             <td><?php echo $item['name'] ?></td>
+            <td><?php echo $item['email'] ?></td>
             <td>
-                <span><a href="update.php?id=<?php echo $item['id'] ?>&name=<?php echo $item['name']?>">Update</a></span>
+                <span><a href="update.php?id=<?php echo $item['id'] ?>&name=<?php echo $item['name']?>&email=<?php echo $item['email']?>">Update</a></span>
                 <span><a href="del.php?id=<?php echo $item['id'] ?>">Delete</a></span>
             </td>
         </tr>

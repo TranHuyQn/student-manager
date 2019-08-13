@@ -4,10 +4,11 @@ include_once '../Student.php';
 include_once '../DBstudent.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (!empty($_POST['name'])) {
+    if (!empty($_POST['name']) && !empty($_POST['email'])) {
         $name = $_POST['name'];
-        $student = new Student($name);
-        $students->create($student);
+        $email = $_POST['email'];
+        $student = new Student($name, $email);
+        $studentDB->create($student);
         header('location: list.php', true);
     }
 }
@@ -30,6 +31,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <tr>
                 <td>Name</td>
                 <td><input type="text" name="name" size="20"></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><input type="text" name="email" size="20"></td>
             </tr>
             <tr>
             <tr>

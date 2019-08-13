@@ -5,11 +5,12 @@ include_once '../DBstudent.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    if (!empty($_POST['name'])) {
+    if (!empty($_POST['name']) && !empty($_POST['email'])) {
         if (!empty($_GET['id'])) {
             $id = $_GET['id'];
             $name = $_POST['name'];
-            $students ->update($name,$id);
+            $email = $_POST['email'];
+            $studentDB->update($id, $name, $email);
         }
     }
     header('location: list.php', true);
@@ -41,6 +42,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <tr>
                 <td>Name</td>
                 <td><input type="text" name="name" size="20" value="<?php echo $_GET['name'] ?>"></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><input type="text" name="email" size="20" value="<?php echo $_GET['email'] ?>"></td>
             </tr>
             <tr>
                 <td></td>

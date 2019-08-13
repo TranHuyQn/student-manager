@@ -6,7 +6,7 @@ include_once '../DBstudent.php';
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['id'])) {
         $id = $_GET['id'];
-        $students ->del($id);
+        $studentDB ->del($id);
     }
     header('location: list.php', true);
 }

@@ -5,10 +5,12 @@ class Student
 {
     public $id;
     public $name;
+    public $email;
 
-    public function __construct($name)
+    public function __construct($name, $email)
     {
         $this->name = $name;
+        $this->email = $email;
     }
 
     public function getName()
@@ -26,5 +28,10 @@ class Student
             }
             return $this->id;
         }
+    }
+
+    public function getEmail()
+    {
+        return $this->email;
     }
 }

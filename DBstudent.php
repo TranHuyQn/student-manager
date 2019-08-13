@@ -15,7 +15,7 @@ class DBstudent
     public function getAll()
     {
         $sql = 'SELECT * FROM students';
-        $stmt = $this->conn->query($sql);
+        $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $data = $stmt->fetchAll();
@@ -25,7 +25,8 @@ class DBstudent
     public function create($obj)
     {
         $name = $obj->getName();
-        $sql = "INSERT INTO students(`name`) VALUE ('$name')";
+        $email = $obj->getEmail();
+        $sql = "INSERT INTO students(`name`,`email`) VALUE ('$name','$email')";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
     }
@@ -37,12 +38,12 @@ class DBstudent
         $stmt->execute();
     }
 
-    public function update($name, $id)
+    public function update($id, $name, $email)
     {
-        $sql ="UPDATE `students` SET `name`='$name' WHERE id='$id'";
+        $sql ="UPDATE `students` SET `name`='$name',`email`='$email' WHERE id='$id'";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
     }
 }
 
-$students = new DBstudent();
+$studentDB = new DBstudent();
