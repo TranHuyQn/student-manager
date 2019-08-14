@@ -7,10 +7,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($_POST['name']) && !empty($_POST['email'])) {
         $name = $_POST['name'];
         $email = $_POST['email'];
-        $student = new Student($name, $email);
+        $newStudent = new Student($name, $email);
         $studentDB = new DBstudent();
-        $studentDB->create($student);
-        header('location: list.php', true);
+        $students = $studentDB->getAll();
+        $error = false;
+        foreach ($students as $key => $student) {
+            if ($newStudent->getEmail() == $student->getEmail()) {
+                $error = true;
+            }
+        }
+        if ($error) {
+            $noti = 'Email đã tồn tại.';
+        } else {
+            $studentDB->create($newStudent);
+            header('location: list.php', true);
+        }
     }
 }
 ?>
@@ -31,11 +42,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <table>
             <tr>
                 <td>Name</td>
-                <td><input type="text" name="name" size="20"></td>
+                <td><input type="text" name="name" size="20" value=""></td>
             </tr>
             <tr>
                 <td>Email</td>
-                <td><input type="text" name="email" size="20"></td>
+                <td><input type="text" name="email" size="20" value=""><?php echo ' ' . $noti ?></td>
             </tr>
             <tr>
             <tr>

@@ -11,10 +11,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $name = $_POST['name'];
             $email = $_POST['email'];
             $studentDB = new DBstudent();
-            $studentDB->update($id, $name, $email);
+            $currentStudent = $studentDB->finById($id);
+            $students = $studentDB->getAll();
+            $error = false;
+            foreach ($students as $key => $student) {
+                if ($email == $student->getEmail() && $email != $currentStudent->getEmail()) {
+                    $error = true;
+                }
+            }
+            if ($error) {
+                $noti = 'Email đã tồn tại.';
+            } else {
+                $studentDB->update($id, $name, $email);
+                header('location: list.php', true);
+            }
         }
     }
-    header('location: list.php', true);
 } else {
     if (!empty($_GET['id'])) {
         $id = $_GET['id'];
@@ -58,7 +70,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </tr>
             <tr>
                 <td>Email</td>
-                <td><input type="text" name="email" size="20" value="<?php echo $student->getEmail(); ?>"></td>
+                <td><input type="text" name="email" size="20"
+                           value="<?php echo $student->getEmail(); ?>"><?php echo ' ' . $noti ?></td>
             </tr>
             <tr>
                 <td></td>
