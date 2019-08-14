@@ -3,7 +3,8 @@ include_once '../DBconnect.php';
 include_once '../Student.php';
 include_once '../DBstudent.php';
 
-$data = $studentDB->getAll();
+$studentDB = new DBstudent();
+$students = $studentDB->getAll();
 ?>
 <!doctype html>
 <html lang="en">
@@ -17,19 +18,19 @@ $data = $studentDB->getAll();
 <body>
 <table border="1" cellspacing="0">
     <tr>
-        <th>ID</th>
+        <th>Stt</th>
         <th>Name</th>
         <th>Email</th>
         <th></th>
     </tr>
-    <?php foreach ($data as $item): ?>
+    <?php foreach ($students as $key=>$student): ?>
         <tr>
-            <td><?php echo $item['id'] ?></td>
-            <td><?php echo $item['name'] ?></td>
-            <td><?php echo $item['email'] ?></td>
+            <td><?php echo ++$key; ?></td>
+            <td><?php echo $student->getName(); ?></td>
+            <td><?php echo $student->getEmail(); ?></td>
             <td>
-                <span><a href="update.php?id=<?php echo $item['id'] ?>&name=<?php echo $item['name']?>&email=<?php echo $item['email']?>">Update</a></span>
-                <span><a href="del.php?id=<?php echo $item['id'] ?>">Delete</a></span>
+                <span><a href="update.php?id=<?php echo $student->getId(); ?>">Update</a></span>
+                <span><a href="del.php?id=<?php echo $student->getId(); ?>">Delete</a></span>
             </td>
         </tr>
     <?php endforeach; ?>

@@ -8,6 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $name = $_POST['name'];
         $email = $_POST['email'];
         $student = new Student($name, $email);
+        $studentDB = new DBstudent();
         $studentDB->create($student);
         header('location: list.php', true);
     }

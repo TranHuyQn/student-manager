@@ -19,7 +19,14 @@ class DBstudent
         $stmt->execute();
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $data = $stmt->fetchAll();
-        return $data;
+        $arr = [];
+
+        foreach ($data as $item) {
+            $student = new Student($item['name'], $item['email']);
+            $student->id = $item['id'];
+            array_push($arr, $student);
+        }
+        return $arr;
     }
 
     public function create($obj)
@@ -40,10 +47,27 @@ class DBstudent
 
     public function update($id, $name, $email)
     {
-        $sql ="UPDATE `students` SET `name`='$name',`email`='$email' WHERE id='$id'";
+        $sql = "UPDATE `students` SET `name`='$name',`email`='$email' WHERE id='$id'";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
     }
+
+    public function finById($id)
+    {
+        $sql = 'SELECT * FROM students where id=' . $id;
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $data = $stmt->fetch();
+        if ($data) {
+            $student = new Student($data['name'], $data['email']);
+            $student->id = $data['id'];
+            return $student;
+        } else {
+            return 'Người dùng không tồn tại.';
+        }
+    }
 }
 
-$studentDB = new DBstudent();
+
+

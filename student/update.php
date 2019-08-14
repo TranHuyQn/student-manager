@@ -10,10 +10,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $id = $_GET['id'];
             $name = $_POST['name'];
             $email = $_POST['email'];
+            $studentDB = new DBstudent();
             $studentDB->update($id, $name, $email);
         }
     }
     header('location: list.php', true);
+} else {
+    if (!empty($_GET['id'])) {
+        $id = $_GET['id'];
+        $studentDB = new DBstudent();
+        $student = $studentDB->finById($id);
+        if (is_string($student)) {
+            echo $student . '<br>';
+            echo '<a href="list.php">Trở về</a>';
+            die();
+        }
+    }
 }
 ?>
 
@@ -33,7 +45,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <table>
             <tr>
                 <td>ID</td>
-                <td><?php if (isset($_GET['id'])) {
+                <td>
+                    <?php if (isset($_GET['id'])) {
                         $id = $_GET['id'];
                         echo $id;
                     } ?>
@@ -41,11 +54,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </tr>
             <tr>
                 <td>Name</td>
-                <td><input type="text" name="name" size="20" value="<?php echo $_GET['name'] ?>"></td>
+                <td><input type="text" name="name" size="20" value="<?php echo $student->getName(); ?>"></td>
             </tr>
             <tr>
                 <td>Email</td>
-                <td><input type="text" name="email" size="20" value="<?php echo $_GET['email'] ?>"></td>
+                <td><input type="text" name="email" size="20" value="<?php echo $student->getEmail(); ?>"></td>
             </tr>
             <tr>
                 <td></td>

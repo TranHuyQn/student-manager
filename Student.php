@@ -18,20 +18,12 @@ class Student
         return $this->name;
     }
 
-    public function getId($data)
-    {
-        {
-            foreach ($data as $key => $value) {
-                if ($this->name == $value['name']) {
-                    $this->id = $value['id'];
-                }
-            }
-            return $this->id;
-        }
-    }
-
     public function getEmail()
     {
         return $this->email;
+    }
+
+    public function getId(){
+        return $this->id;
     }
 }
