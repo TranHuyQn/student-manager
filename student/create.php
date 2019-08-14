@@ -22,6 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $studentDB->create($newStudent);
             header('location: list.php', true);
         }
+    } else {
+        $noti1 = 'Không được để trống \'name\' và \'email\' ';
     }
 }
 ?>
@@ -37,16 +39,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 <h2>Add new student</h2>
+<?php echo $noti1?>
 <div class="table">
     <form method="post" action="">
         <table>
             <tr>
                 <td>Name</td>
-                <td><input type="text" name="name" size="20" value=""></td>
+                <td><input type="text" name="name" size="20" value="<?php if (isset($name)) echo $name; ?>"></td>
             </tr>
             <tr>
                 <td>Email</td>
-                <td><input type="text" name="email" size="20" value=""><?php echo ' ' . $noti ?></td>
+                <td><input type="text" name="email" size="20" value="<?php if (isset($email)) echo $email; ?>"><?php echo ' ' . $noti ?></td>
             </tr>
             <tr>
             <tr>

@@ -26,6 +26,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 header('location: list.php', true);
             }
         }
+    } else {
+        $noti1 = 'Không được để trống \'name\' và \'email\' ';
+        if (!empty($_GET['id'])) {
+            $id = $_GET['id'];
+            $studentDB = new DBstudent();
+            $student = $studentDB->finById($id);
+        }
     }
 } else {
     if (!empty($_GET['id'])) {
@@ -52,6 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 <h2>Updata infomation</h2>
+<?php echo $noti1?>
 <div class="table">
     <form method="post" action="">
         <table>
@@ -70,8 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </tr>
             <tr>
                 <td>Email</td>
-                <td><input type="text" name="email" size="20"
-                           value="<?php echo $student->getEmail(); ?>"><?php echo ' ' . $noti ?></td>
+                <td><input type="text" name="email" size="20" value="<?php echo isset($email)?$email:$student->getEmail(); ?>"><?php echo ' ' . $noti ?></td>
             </tr>
             <tr>
                 <td></td>
