@@ -4,7 +4,6 @@ include_once '../Student.php';
 include_once '../DBstudent.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
     if (!empty($_POST['name']) && !empty($_POST['email'])) {
         if (!empty($_GET['id'])) {
             $id = $_GET['id'];
@@ -31,16 +30,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (!empty($_GET['id'])) {
             $id = $_GET['id'];
             $studentDB = new DBstudent();
-            $student = $studentDB->finById($id);
+            $currentStudent = $studentDB->finById($id);
         }
     }
 } else {
     if (!empty($_GET['id'])) {
         $id = $_GET['id'];
         $studentDB = new DBstudent();
-        $student = $studentDB->finById($id);
-        if (is_string($student)) {
-            echo $student . '<br>';
+        $currentStudent = $studentDB->finById($id);
+        if (is_string($currentStudent)) {
+            echo $currentStudent . '<br>';
             echo '<a href="list.php">Trở về</a>';
             die();
         }
@@ -59,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 <h2>Updata infomation</h2>
-<?php echo $noti1?>
+<?php echo $noti1 ?>
 <div class="table">
     <form method="post" action="">
         <table>
@@ -74,11 +73,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </tr>
             <tr>
                 <td>Name</td>
-                <td><input type="text" name="name" size="20" value="<?php echo $student->getName(); ?>"></td>
+                <td><input type="text" name="name" size="20" value="<?php echo $currentStudent->getName(); ?>"></td>
             </tr>
             <tr>
                 <td>Email</td>
-                <td><input type="text" name="email" size="20" value="<?php echo isset($email)?$email:$student->getEmail(); ?>"><?php echo ' ' . $noti ?></td>
+                <td><input type="text" name="email" size="20" value="<?php echo isset($email) ? $email : $currentStudent->getEmail(); ?>"><?php echo ' ' . $noti ?>
+                </td>
             </tr>
             <tr>
                 <td></td>

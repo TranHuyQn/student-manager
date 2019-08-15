@@ -5,6 +5,11 @@ include_once '../DBstudent.php';
 
 $studentDB = new DBstudent();
 $students = $studentDB->getAll();
+if (is_string($students)) {
+    echo $students . '<br>';
+    echo '<a href="create.php" type="button"><button>Add new student</button></a>';
+    die();
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -16,25 +21,25 @@ $students = $studentDB->getAll();
     <title>List Student</title>
 </head>
 <body>
-<table border="1" cellspacing="0">
+<table border="1" cellspacing="0" style="margin-top: auto">
     <tr>
         <th>Stt</th>
         <th>Name</th>
         <th>Email</th>
         <th></th>
     </tr>
-    <?php foreach ($students as $key=>$student): ?>
+    <?php foreach ($students as $key => $student): ?>
         <tr>
             <td><?php echo ++$key; ?></td>
             <td><?php echo $student->getName(); ?></td>
             <td><?php echo $student->getEmail(); ?></td>
             <td>
-                <span><a href="update.php?id=<?php echo $student->getId(); ?>">Update</a></span>
-                <span><a href="del.php?id=<?php echo $student->getId(); ?>">Delete</a></span>
+                <span><a href="update.php?id=<?php echo $student->getId(); ?>"><button>Update</button></a></span>
+                <span><a href="del.php?id=<?php echo $student->getId(); ?>"><button>Delete</button></a></span>
             </td>
         </tr>
     <?php endforeach; ?>
 </table>
-<a href="create.php" type="button">Add new student</a>
+<a href="create.php" type="button"><button>Add new student</button></a>
 </body>
 </html>

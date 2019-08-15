@@ -20,13 +20,16 @@ class DBstudent
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $data = $stmt->fetchAll();
         $arr = [];
-
-        foreach ($data as $item) {
-            $student = new Student($item['name'], $item['email']);
-            $student->id = $item['id'];
-            array_push($arr, $student);
+        if($data){
+            foreach ($data as $item) {
+                $student = new Student($item['name'], $item['email']);
+                $student->id = $item['id'];
+                array_push($arr, $student);
+            }
+            return $arr;
+        } else {
+            return 'không có dữ liệu hiển thị';
         }
-        return $arr;
     }
 
     public function create($obj)
