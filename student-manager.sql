@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Aug 14, 2019 at 09:07 AM
+-- Generation Time: Aug 17, 2019 at 08:16 PM
 -- Server version: 5.7.27-0ubuntu0.18.04.1
--- PHP Version: 7.2.19-0ubuntu0.18.04.1
+-- PHP Version: 7.2.19-0ubuntu0.18.04.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -29,15 +29,19 @@ SET time_zone = "+00:00";
 CREATE TABLE `students` (
   `id` int(11) NOT NULL,
   `name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `email` varchar(50) COLLATE utf8_unicode_ci NOT NULL
+  `email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `username` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(50) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `students`
 --
 
-INSERT INTO `students` (`id`, `name`, `email`) VALUES
-(40, 'trần văn huy', 'tranvanhuy0202@gmail.com');
+INSERT INTO `students` (`id`, `name`, `email`, `username`, `password`) VALUES
+(9, 'Sơn hải', 'hai@gmail.com', 'admin', 'admin'),
+(11, 'Tống Nguyên Khánh', 'khanh123@gmail.com', 'khanh123', '123456'),
+(12, 'Trần văn huy', 'tranvanhuy0202@gmail.com', 'tranhuy', '123456');
 
 --
 -- Indexes for dumped tables
@@ -48,7 +52,8 @@ INSERT INTO `students` (`id`, `name`, `email`) VALUES
 --
 ALTER TABLE `students`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `username` (`username`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -58,7 +63,7 @@ ALTER TABLE `students`
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

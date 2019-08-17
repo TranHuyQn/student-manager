@@ -22,8 +22,8 @@ class DBstudent
         $arr = [];
         if($data){
             foreach ($data as $item) {
-                $student = new Student($item['name'], $item['email']);
-                $student->id = $item['id'];
+                $student = new Student($item['name'], $item['email'], $item['username'], $item['password']);
+                $student->setId($item['id']);
                 array_push($arr, $student);
             }
             return $arr;
@@ -36,7 +36,9 @@ class DBstudent
     {
         $name = $obj->getName();
         $email = $obj->getEmail();
-        $sql = "INSERT INTO students(`name`,`email`) VALUE ('$name','$email')";
+        $username = $obj->getUsername();
+        $password = $obj->getPassword();
+        $sql = "INSERT INTO students(`name`,`email`,`username`,`password`) VALUE ('$name','$email','$username','$password')";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
     }
@@ -63,8 +65,8 @@ class DBstudent
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $data = $stmt->fetch();
         if ($data) {
-            $student = new Student($data['name'], $data['email']);
-            $student->id = $data['id'];
+            $student = new Student($data['name'], $data['email'], $data['username'], $data['password']);
+            $student->setId($data['id']);
             return $student;
         } else {
             return 'Người dùng không tồn tại.';
