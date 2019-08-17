@@ -4,43 +4,53 @@ include_once '../DBconnect.php';
 include_once '../Student.php';
 include_once '../DBstudent.php';
 if (isset($_SESSION['id'])) {
-    if($_SESSION['id'] == '9'){ //id = 9 là admin
+    if ($_SESSION['id'] == '9') { //id = 9 là admin
         $id = $_GET['id'];
     } else {
         $id = $_SESSION['id'];
     }
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (!empty($_POST['name']) && !empty($_POST['email'])) {
-                $name = $_POST['name'];
-                $email = $_POST['email'];
-                $studentDB = new DBstudent();
-                $currentStudent = $studentDB->finById($id);
-                $students = $studentDB->getAll();
-                $error = false;
-                foreach ($students as $key => $student) {
-                    if ($email == $student->getEmail() && $email != $currentStudent->getEmail()) {
-                        $error = true;
-                    }
-                }
-                if ($error) {
-                    $noti = 'Email đã tồn tại.';
-                } else {
-                    $studentDB->update($id, $name, $email);
-                    header('location: list.php', true);
-                }
-        } else {
-                $noti1 = 'Không được để trống \'name\' và \'email\' ';
-                $studentDB = new DBstudent();
-                $currentStudent = $studentDB->finById($id);
+        $name = $_POST['name'];
+        $email = $_POST['email'];
+        $error = false;
+        if (empty($name)) {
+            $errorName = 'name không được để trống';
+            $error = true;
         }
-    } else {
+        if (empty($email)) {
+            $errorEmail = 'email không được để trống';
+            $error = true;
+        } else {
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $errorEmail = "Email không hợp lệ";
+                $error = true;
+            }
+        }
+        if (!$error) {
             $studentDB = new DBstudent();
             $currentStudent = $studentDB->finById($id);
-            if (is_string($currentStudent)) {
-                echo $currentStudent . '<br>';
-                echo '<a href="admin.php">Trở về</a>';
-                die();
+            $students = $studentDB->getAll();
+            $duplicateError = false;
+            foreach ($students as $key => $student) {
+                if ($email == $student->getEmail() && $email != $currentStudent->getEmail()) {
+                    $duplicateError = true;
+                }
             }
+            if ($duplicateError) {
+                $errorEmail = 'Email đã tồn tại.';
+            } else {
+                $studentDB->update($id, $name, $email);
+                header('location: list.php', true);
+            }
+        }
+    } else {
+        $studentDB = new DBstudent();
+        $currentStudent = $studentDB->finById($id);
+        if (is_string($currentStudent)) {
+            echo $currentStudent . '<br>';
+            echo '<a href="admin.php">Trở về</a>';
+            die();
+        }
     }
     ?>
 
@@ -54,9 +64,9 @@ if (isset($_SESSION['id'])) {
         <title>Update info</title>
     </head>
     <body>
-    <?php include_once '../header.php'?>
+    <?php include_once '../header.php' ?>
     <h2>Updata infomation</h2>
-    <?php echo $noti1 ?>
+    <?php ?>
     <div class="table">
         <form method="post" action="">
             <table>
@@ -68,12 +78,14 @@ if (isset($_SESSION['id'])) {
                 </tr>
                 <tr>
                     <td>Name</td>
-                    <td><input type="text" name="name" size="20" value="<?php echo $currentStudent->getName(); ?>"></td>
+                    <td><input type="text" name="name"
+                               value="<?php echo isset($name) ? $name : $currentStudent->getName(); ?>"><?php echo $errorName ?>
+                    </td>
                 </tr>
                 <tr>
                     <td>Email</td>
-                    <td><input type="text" name="email" size="20"
-                               value="<?php echo isset($email) ? $email : $currentStudent->getEmail(); ?>"><?php echo ' ' . $noti ?>
+                    <td><input type="text" name="email"
+                               value="<?php echo isset($email) ? $email : $currentStudent->getEmail(); ?>"><?php echo $errorEmail ?>
                     </td>
                 </tr>
                 <tr>
