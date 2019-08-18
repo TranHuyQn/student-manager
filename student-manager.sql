@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Aug 17, 2019 at 08:16 PM
+-- Generation Time: Aug 18, 2019 at 05:24 PM
 -- Server version: 5.7.27-0ubuntu0.18.04.1
 -- PHP Version: 7.2.19-0ubuntu0.18.04.2
 
@@ -19,6 +19,24 @@ SET time_zone = "+00:00";
 --
 -- Database: `student-manager`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin`
+--
+
+CREATE TABLE `admin` (
+  `id` int(11) NOT NULL,
+  `studentId` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `admin`
+--
+
+INSERT INTO `admin` (`id`, `studentId`) VALUES
+(1, 9);
 
 -- --------------------------------------------------------
 
@@ -40,12 +58,21 @@ CREATE TABLE `students` (
 
 INSERT INTO `students` (`id`, `name`, `email`, `username`, `password`) VALUES
 (9, 'Sơn hải', 'hai@gmail.com', 'admin', 'admin'),
-(11, 'Tống Nguyên Khánh', 'khanh123@gmail.com', 'khanh123', '123456'),
-(12, 'Trần văn huy', 'tranvanhuy0202@gmail.com', 'tranhuy', '123456');
+(12, 'Trần văn huy', 'tranvanhuy0202@gmail.com', 'tranhuy', '123456'),
+(13, 'Giáp Văn Sáng', 'sang@gmail.com', 'sang123', '123456'),
+(14, 'Đàm Quang Đức', 'duc@gmail.com', 'damduc', '123456'),
+(15, 'Lương Mạnh Hải', 'manhhai@gmail.com', 'manhhai', '123456');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `admin`
+--
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `studentId` (`studentId`);
 
 --
 -- Indexes for table `students`
@@ -60,10 +87,25 @@ ALTER TABLE `students`
 --
 
 --
+-- AUTO_INCREMENT for table `admin`
+--
+ALTER TABLE `admin`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `admin`
+--
+ALTER TABLE `admin`
+  ADD CONSTRAINT `admin_ibfk_1` FOREIGN KEY (`studentId`) REFERENCES `students` (`id`);
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
