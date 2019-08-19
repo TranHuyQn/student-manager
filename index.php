@@ -1,8 +1,9 @@
 <?php
 session_start();
 include_once 'DBconnect.php';
+define('ADMIN_ID', '9');
 if(isset($_SESSION['id'])){
-    if($_SESSION['id'] == '9'){ //id = 9 là admin
+    if($_SESSION['id'] == ADMIN_ID){
         header('location:student/admin.php');
     } else {
         header('location:student/list.php');
@@ -30,7 +31,7 @@ if(isset($_SESSION['id'])){
 
                 if ($result) {
                     $_SESSION['id'] = $result['id'];
-                    if ($_SESSION['id'] == '9') {
+                    if ($_SESSION['id'] == ADMIN_ID) {
                         header('location:student/admin.php');
                     } else {
                         header('location:student/list.php');

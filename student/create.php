@@ -3,7 +3,8 @@ session_start();
 include_once '../DBconnect.php';
 include_once '../Student.php';
 include_once '../DBstudent.php';
-if (isset($_SESSION['id']) && $_SESSION['id'] == '9') { //id = 9 là admin
+define('ADMIN_ID', '9');
+if (isset($_SESSION['id']) && $_SESSION['id'] == ADMIN_ID) {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $name = $_POST['name'];
         $email = $_POST['email'];
