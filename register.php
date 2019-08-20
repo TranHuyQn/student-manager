@@ -30,18 +30,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error = true;
     }
     if (!$error) {
-        $newStudent = new Student($name, $email, $username, $password);
         $studentDB = new DBstudent();
-        $students = $studentDB->getAll();
-        $duplicateError = false;
-        foreach ($students as $key => $student) {
-            if ($newStudent->getEmail() == $student->getEmail() || $newStudent->getUsername() == $student->getUsername()) {
-                $duplicateError = true;
-            }
-        }
-        if ($duplicateError) {
+        if ($studentDB->isDuplicateEmail($email) || $studentDB->isDuplicateUsername($username)) {
             $noti = 'Email hoặc Username đã tồn tại.';
         } else {
+            $newStudent = new Student($name, $email, $username, $password);
             $studentDB->create($newStudent);
             header('location: index.php', true);
         }

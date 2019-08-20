@@ -20,7 +20,7 @@ class DBstudent
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $data = $stmt->fetchAll();
         $arr = [];
-        if($data){
+        if ($data) {
             foreach ($data as $item) {
                 $student = new Student($item['name'], $item['email'], $item['username'], $item['password']);
                 $student->setId($item['id']);
@@ -71,6 +71,45 @@ class DBstudent
         } else {
             return 'Người dùng không tồn tại.';
         }
+    }
+
+    public function isAdmin($id)
+    {
+        $sql = "SELECT studentId FROM admin";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $data = $stmt->fetchAll();
+        foreach ($data as $item) {
+            if ($item['studentId'] == $id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function isDuplicateEmail($email)
+    {
+        $sql = "SELECT * FROM `students` WHERE `email`='$email'";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->rowCount();
+        if($result == 0){
+            return false;
+        }
+        return true;
+    }
+
+    public function isDuplicateUsername($username)
+    {
+        $sql = "SELECT * FROM `students` WHERE `username`='$username'";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->rowCount();
+        if($result == 0){
+            return false;
+        }
+        return true;
     }
 }
 

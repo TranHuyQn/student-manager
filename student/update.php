@@ -3,9 +3,10 @@ session_start();
 include_once '../DBconnect.php';
 include_once '../Student.php';
 include_once '../DBstudent.php';
-define('ADMIN_ID', '9');
+
+$studentDB = new DBstudent();
 if (isset($_SESSION['id'])) {
-    if ($_SESSION['id'] == ADMIN_ID) {
+    if ($studentDB->isAdmin($_SESSION['id'])) {
         $id = $_GET['id'];
     } else {
         $id = $_SESSION['id'];
@@ -28,16 +29,8 @@ if (isset($_SESSION['id'])) {
             }
         }
         if (!$error) {
-            $studentDB = new DBstudent();
             $currentStudent = $studentDB->finById($id);
-            $students = $studentDB->getAll();
-            $duplicateError = false;
-            foreach ($students as $key => $student) {
-                if ($email == $student->getEmail() && $email != $currentStudent->getEmail()) {
-                    $duplicateError = true;
-                }
-            }
-            if ($duplicateError) {
+            if ($studentDB->isDuplicateEmail($email) && $email != $currentStudent->getEmail()) {
                 $errorEmail = 'Email đã tồn tại.';
             } else {
                 $studentDB->update($id, $name, $email);
@@ -45,7 +38,6 @@ if (isset($_SESSION['id'])) {
             }
         }
     } else {
-        $studentDB = new DBstudent();
         $currentStudent = $studentDB->finById($id);
         if (is_string($currentStudent)) {
             echo $currentStudent . '<br>';
@@ -53,54 +45,52 @@ if (isset($_SESSION['id'])) {
             die();
         }
     }
-    ?>
-
-    <!doctype html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport"
-              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Update info</title>
-    </head>
-    <body>
-    <?php include_once '../header.php' ?>
-    <h2>Updata infomation</h2>
-    <?php ?>
-    <div class="table">
-        <form method="post" action="">
-            <table>
-                <tr>
-                    <td>ID</td>
-                    <td>
-                        <?php echo $id ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Name</td>
-                    <td><input type="text" name="name"
-                               value="<?php echo isset($name) ? $name : $currentStudent->getName(); ?>"><?php echo $errorName ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Email</td>
-                    <td><input type="text" name="email"
-                               value="<?php echo isset($email) ? $email : $currentStudent->getEmail(); ?>"><?php echo $errorEmail ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <button type="submit">Update</button>
-                    </td>
-                </tr>
-            </table>
-        </form>
-    </div>
-    </body>
-    </html>
-    <?php
 } else {
     header('location:../index.php');
 } ?>
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Update info</title>
+</head>
+<body>
+<?php include_once '../header.php' ?>
+<h2>Updata infomation</h2>
+<?php ?>
+<div class="table">
+    <form method="post" action="">
+        <table>
+            <tr>
+                <td>ID</td>
+                <td>
+                    <?php echo $id ?>
+                </td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td><input type="text" name="name"
+                           value="<?php echo isset($name) ? $name : $currentStudent->getName(); ?>"><?php echo $errorName ?>
+                </td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><input type="text" name="email"
+                           value="<?php echo isset($email) ? $email : $currentStudent->getEmail(); ?>"><?php echo $errorEmail ?>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button type="submit">Update</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+</html>
